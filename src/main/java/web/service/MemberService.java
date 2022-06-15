@@ -1,7 +1,7 @@
 package web.service;
 
-import web.domain.MemberEntity;
-import web.domain.MemberRepository;
+import web.domain.member.MemberEntity;
+import web.domain.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.dto.Memberdto;

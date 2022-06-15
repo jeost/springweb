@@ -1,4 +1,4 @@
-package web.domain;
+package web.domain.member;
 
 import lombok.Builder;
 

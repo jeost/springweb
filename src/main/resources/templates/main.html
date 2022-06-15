@@ -5,6 +5,7 @@
     <title>제목</title>
 </head>
 <body>
+    <div th:replace="header.html::header"></div>
     <p>@ResponseBody</p>
     <p>@RestController</p>
     <p th:text="${data}"></p>

@@ -1,10 +1,13 @@
 
   function addressWrite(){
-    let roomname=$("#roomname").val();
+    let form=$("#saveform")[0];
+    let formdata=new FormData(form);
     $.ajax({
         url:"/room/write",
-        method:"PUT",
-        data:{"roomname" : roomname, "x":x, "y":y},
+        method:"POST",
+        data:formdata,
+        contentType:false,// 첨부파일 전송시 사용되는 속성
+        processData:false,// 첨부파일 전송시 사용되는 속성
         success:function(re){
         }
     });
@@ -45,8 +48,8 @@
                         // 해당 주소에 대한 좌표를 받아서
                         var coords = new daum.maps.LatLng(result.y, result.x);
                             //해당 좌표를 전역변수에 넣어주기
-                            x=result.x;
-                            y=result.y;
+                            $("#lat").val( result.x ) ;
+                            $("#lng").val( result.y ) ;
                         // 지도를 보여준다.
                         mapContainer.style.display = "block";
                         map.relayout();

@@ -1,4 +1,4 @@
-package web.domain;
+package web.domain.test;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

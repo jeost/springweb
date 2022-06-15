@@ -1,6 +1,6 @@
 package web.controller;
 
-import org.json.JSONArray;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,8 @@ import web.dto.RoomDto;
 import web.service.RoomService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Controller // 해당 클래스를 템플릿영역으로 사용
 @RequestMapping("/room") // 요청 매핑(room)
@@ -22,7 +23,7 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @PutMapping("/write") // 2. 등록 처리
+    @PostMapping("/write") // 2. 등록 처리
     @ResponseBody
     public boolean write_save(RoomDto roomDto){
         try{
@@ -38,9 +39,10 @@ public class RoomController {
     public String list(){
         return "room/list";
     }
-    @GetMapping("/roomlist")
-    public void roomlist(HttpServletResponse response){
-        JSONArray jsonArray=roomService.room_list();
+    @PostMapping("/roomlist")
+    @ResponseBody
+    public Map<String, List<Map<String, String>>> roomlist( @RequestBody Map<String, String> location){
+        /*JSONArray jsonArray=roomService.room_list();
         JSONObject object=new JSONObject();
         object.put("positions",jsonArray);
         response.setCharacterEncoding("UTF-8");
@@ -49,6 +51,20 @@ public class RoomController {
             response.getWriter().print(object);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        return roomService.room_list(location);
+    }
+    @GetMapping("/getroom")
+    @ResponseBody
+    public void getroom(@RequestParam("rno") int rno, HttpServletResponse response){
+        System.out.println(rno);
+        roomService.getroom(rno);
+        try{
+            JSONObject object=roomService.getroom(rno);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/JSON");
+            response.getWriter().print(object);
+        }catch(Exception e){e.printStackTrace();}
     }
 }

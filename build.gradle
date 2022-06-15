@@ -23,11 +23,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2' // [h2 : 관계형 데이터베이스=인메모리, 테스트목적]
-//    runtimeOnly 'mysql:mysql-connector-java'
+//    runtimeOnly 'com.h2database:h2' // [h2 : 관계형 데이터베이스=인메모리, 테스트목적]
+    runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
 //    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.json', name: 'json', version: '20220320'
+//    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 }
 
 tasks.named('test') {
