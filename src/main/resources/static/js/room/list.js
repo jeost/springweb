@@ -99,7 +99,6 @@
                             return marker;
                         });
                         clusterer.addMarkers(markers);  // 클러스터에 마커 추가
-                        console.log(clusterer );
                         //변수 html 을 해당 Id 값에다 넣기
                         $("#sidebar").html(html);
                 } // success end
@@ -122,28 +121,29 @@
 function getroom(rno){
 
 
-                                $.ajax({
-                                    url:"/room/getroom",
-                                    method:"GET",
-                                    data:{"rno":rno},
-                                    success:function(room){
-                                        // 응답받은 데이터를 모달에 넣기
-                                        let imgtag="";
-                                        for(let i=0; i<room.rImglist.length; i++){
-                                            if(i==0){ // 첫 이미지에 active 속성 추가
-                                            imgtag+=
-                                                '<div class="carousel-item active">'+
-                                                    '<img src=/upload/"'+room.rimglist[i]+'" class="d-block w-100" alt="...">'+
-                                                '</div>';
-                                            }else{
-                                            imgtag+=
-                                                '<div class="carousel-item">'+
-                                                    '<img src=/upload/"'+room.rimglist[i]+'" class="d-block w-100" alt="...">'+
-                                                '</div>';
-                                            }
-                                        }
-                                        $("#modalimglist").html(imgtag);
-                                    }
-                                }); // ajax e
-                                $("#modalbtn").click();
+    $.ajax({
+        url:"/room/getroom",
+        method:"GET",
+        data:{"rno":rno},
+        success:function(room){
+            console.log(room);
+            // 응답받은 데이터를 모달에 넣기
+            let imgtag="";
+            for(let i=0; i<room.rimglist.length; i++){
+                if(i==0){ // 첫 이미지에 active 속성 추가
+                imgtag+=
+                    '<div class="carousel-item active">'+
+                        '<img src=/upload/"'+room.rimglist[i]+'" class="d-block w-100" alt="...">'+
+                    '</div>';
+                }else{
+                imgtag+=
+                    '<div class="carousel-item">'+
+                        '<img src=/upload/"'+room.rimglist[i]+'" class="d-block w-100" alt="...">'+
+                    '</div>';
+                }
+            }
+            $("#modalimglist").html(imgtag);
+        }
+    }); // ajax e
+    $("#modalbtn").click();
 }

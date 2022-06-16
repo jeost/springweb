@@ -5,12 +5,16 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import web.domain.member.MemberEntity;
+import web.domain.member.MemberRepository;
 import web.domain.room.RoomEntity;
 import web.domain.room.RoomImgEntity;
 import web.domain.room.RoomImgRepository;
 import web.domain.room.RoomRepository;
+import web.dto.LoginDto;
 import web.dto.RoomDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +26,19 @@ public class RoomService {
     private RoomRepository roomRepository;
     @Autowired
     private RoomImgRepository roomImgRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     @Transactional
             public boolean room_save(RoomDto roomDto){
+        //현재 로그인 세션 호출
+        LoginDto dto=(LoginDto)request.getSession().getAttribute("login");
+        //현재 로그인 된 회원의 엔티티 찾기
+        MemberEntity memberEntity=memberRepository.findById(dto.getMno()).get();
 //                RoomEntity roomEntity= RoomEntity.builder().roomname(roomDto.getRname()).lat(roomDto.getX()).lng(roomDto.getY())
 //                        .rdealsystem(roomDto.getRdealsystem()).rprice(roomDto.getRprice()).rarea(roomDto.getRarea())
 //                        .rmanage(roomDto.getRmanage()).rstruc(roomDto.getRstruc()).rfinishdate(roomDto.getRfinishdate())
@@ -34,6 +49,10 @@ public class RoomService {
                 RoomEntity roomEntity =roomDto.toEntity(); // DTO -> Entity 변환
                 roomRepository.save(roomEntity); // 우선적으로 룸 DB에 저장
 
+                    //현재 로그인 된 엔티티들을 엔티티에 저장
+                    roomEntity.setMemberEntity(memberEntity);
+                    //현재 로그인 된 회원 엔티티 내 룸 리스트에 룸 엔티티 추가
+                    memberEntity.getRoomEntityList().add(roomEntity);
                 String uuidfile=null; // 입력받은 첨부파일을 저장하는거 여기부터 start
                 if(roomDto.getRimg().size()!=0){ // 첨부파일이 1개 이상이면
                     for(MultipartFile file:roomDto.getRimg()){
@@ -51,8 +70,6 @@ public class RoomService {
                             RoomImgEntity roomImgEntity= RoomImgEntity.builder()
                                     .rimg(uuidfile).roomEntity(roomEntity).build();
                             //엔티티 세이브
-                            System.out.println(roomImgEntity.toString());
-                            System.out.println(roomImgRepository.toString());
                             roomImgRepository.save(roomImgEntity);
                             //위에서 생성된 이미지 엔티티를 룸 엔티티에 추가
                             roomEntity.getRoomImgEntityList().add(roomImgEntity);
@@ -64,6 +81,8 @@ public class RoomService {
 
                 return true;
             }
+
+            @Transactional
     public Map<String, List<Map<String, String>>> room_list(Map<String, String> location){
         /*JSONArray jsonArray=new JSONArray();
         //모든 엔티티 호출
@@ -84,8 +103,8 @@ public class RoomService {
         double pa=Double.parseDouble(location.get("pa"));
         for(RoomEntity entity : roomEntityList){
             //location 범위 내 좌표만 저장하기
-            if(Double.parseDouble(entity.getLng())>qa && Double.parseDouble(entity.getLng())<pa
-            && Double.parseDouble(entity.getLat())>ha && Double.parseDouble(entity.getLat())<oa){
+            if(Double.parseDouble(entity.getLat())>qa && Double.parseDouble(entity.getLat())<pa
+            && Double.parseDouble(entity.getLng())>ha && Double.parseDouble(entity.getLng())<oa){
                 //맵에 데이터를 담고나서 리스트에 담기
                 Map<String, String> map=new HashMap<String, String>();
                 map.put("rname",entity.getRname());
@@ -106,7 +125,7 @@ public class RoomService {
                 map.put("rbuilding",entity.getRbuilding());
                 map.put("raddress",entity.getRaddress());
                 map.put("rcontent",entity.getRcontent());
-                map.put("rimg",entity.getRoomImgEntityList().get(0).getRimg()+""); // 대표이미지(첫번째 이미지) 빼오기
+                map.put("rimg",entity.getRoomImgEntityList().get(0).getRimg()); // 대표이미지(첫번째 이미지) 빼오기
                 mapList.add(map);
             }
         }
@@ -116,9 +135,10 @@ public class RoomService {
         return object;
     }
 
+    @Transactional
     public JSONObject getroom(int rno){
-        Optional<RoomEntity> temp=roomRepository.findById(rno);
-        RoomEntity roomEntity=temp.get();
+        Optional<RoomEntity> entity=roomRepository.findById(rno);
+        RoomEntity roomEntity=entity.get();
         JSONObject object=new JSONObject();
         //json에 엔티티 필드 값 넣기
         object.put("rname",roomEntity.getRname());
@@ -129,8 +149,36 @@ public class RoomService {
         }
         //json 오브젝트 안에 array 형태의 json 값을 넣기
         object.put("rimglist",jsonArray);
-        System.out.println(object);
         //반환
         return object;
+    }
+
+    //현재 로그인된 회원이 등록한 방 목록 호출
+    @Transactional
+    public JSONArray myroomlist(){
+        JSONArray jsonArray=new JSONArray();
+        LoginDto logindto = (LoginDto) request.getSession().getAttribute("login");
+        MemberEntity memberEntity=memberRepository.findById(logindto.getMno()).get();
+        //찾은 회원 엔티티의 방 목록을 JSON 형태로 변환하기
+        for(RoomEntity e:memberEntity.getRoomEntityList()){
+            JSONObject object=new JSONObject();
+            object.put("rname",e.getRname());
+            object.put("rimg",e.getRoomImgEntityList().get(0).getRimg());
+            object.put("rdate",e.getModifiedate());
+            object.put("rno",e.getRno());
+            jsonArray.put(object);
+        }
+        return jsonArray;
+    }
+
+    @Transactional
+    public boolean delete(int rno){
+        RoomEntity entity=roomRepository.findById(rno).get();
+        if(entity!=null){
+            roomRepository.delete(entity);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

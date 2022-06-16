@@ -1,6 +1,7 @@
 package web.domain.room;
 
 import lombok.*;
+import web.domain.BaseTime;
 
 import javax.persistence.*;
 
@@ -8,11 +9,11 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
+@ToString( exclude="roomEntity" )
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="roomimg")
-public class RoomImgEntity {
+public class RoomImgEntity extends BaseTime {
     //pk번호
     @Id
     @GeneratedValue

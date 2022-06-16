@@ -1,6 +1,7 @@
 package web.controller;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import web.dto.RoomDto;
 import web.service.RoomService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +60,30 @@ public class RoomController {
     @GetMapping("/getroom")
     @ResponseBody
     public void getroom(@RequestParam("rno") int rno, HttpServletResponse response){
-        System.out.println(rno);
-        roomService.getroom(rno);
         try{
             JSONObject object=roomService.getroom(rno);
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/JSON");
+            response.setContentType("application/json");
             response.getWriter().print(object);
         }catch(Exception e){e.printStackTrace();}
+    }
+
+    @GetMapping("/myroomlist")
+    @ResponseBody
+    public void myroomlist(HttpServletResponse response){
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        try {
+            response.getWriter().print(roomService.myroomlist());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //방 삭제
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public boolean delete(@RequestParam("rno") int rno){
+        return roomService.delete(rno);
     }
 }

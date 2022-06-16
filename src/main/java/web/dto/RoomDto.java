@@ -2,6 +2,7 @@ package web.dto;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+import web.domain.member.MemberEntity;
 import web.domain.room.RoomEntity;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RoomDto {
+    private int mno;
     private int rno;
     private String rname;
     private String lat;
@@ -36,7 +38,7 @@ public class RoomDto {
 
     //DTO -> Entity 메소드
     public RoomEntity toEntity(){
-        return RoomEntity.builder().rno(this.rno).rname(this.rname).lat(this.lat).lng(this.lng).rdealsystem(this.rdealsystem)
+        return RoomEntity.builder().memberEntity(new MemberEntity()).rno(this.rno).rname(this.rname).lat(this.lat).lng(this.lng).rdealsystem(this.rdealsystem)
                 .rprice(this.rprice).rarea(this.rarea).rmanage(this.rmanage).rstruc(this.rstruc).rfinishdate(this.rfinishdate)
                 .rparking(this.rparking).relevate(this.relevate).renterdate(this.renterdate).rfloor(this.rfloor).rfloorall(this.rfloorall)
                 .rbuilding(this.rbuilding).raddress(this.raddress).rcontent(this.rcontent).roomImgEntityList(new ArrayList<>()).build();

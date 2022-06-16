@@ -1,6 +1,8 @@
 package web.domain.room;
 
 import lombok.*;
+import web.domain.BaseTime;
+import web.domain.member.MemberEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
 @ToString
 @Table(name="room")
 @Builder
-public class RoomEntity {
+public class RoomEntity extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rno;
@@ -36,7 +38,9 @@ public class RoomEntity {
     private String raddress;
     @Column(columnDefinition = "TEXT")
     private String rcontent;
-
+    @ManyToOne
+    @JoinColumn(name="mno")
+    private MemberEntity memberEntity;
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL) // 하나로 다수 연결
     private List<RoomImgEntity> roomImgEntityList;
 }
