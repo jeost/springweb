@@ -59,8 +59,13 @@ public class RoomService {
                         UUID uuid=UUID.randomUUID(); // UUID 난수 생성
                         //파일명에 언더바 존재시 문제 발생하니까 하이픈으로 변경
                         uuidfile=uuid.toString()+"_"+file.getOriginalFilename().replaceAll("_","-"); // 난수와 파일명 구분 언더바
-                        String dir="C:\\Users\\504\\IdeaProjects\\springweb\\src\\main\\resources\\static\\upload\\";
-                        String filepath=dir+uuidfile; // 파일명 같으면 식별 불가해서 난수값추가
+                        //윈도우 운영체제의 현재 프로젝트 경로
+                            //String dlr="C:\\Users\\504\\IdeaProjects\\springweb\\src\\main\\resources\\static\\upload\\";
+                        //리눅스 운영체제의 현재 프로젝트 빌더 경로
+                            //리눅스 최상위 경로 : /home
+                            //리눅스 계정 폴더 경로 : /ec2-user
+                            String dlr="/home/ec2-user/app/springweb/build/resources/static/upload/";
+                        String filepath=dlr+uuidfile; // 파일명 같으면 식별 불가해서 난수값추가
                         try {
                             //파일 경로 이동(업로드 처리)
                             file.transferTo(new File(filepath));

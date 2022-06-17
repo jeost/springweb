@@ -15,7 +15,7 @@ public class MemberController {
     //로그인 페이지 이동 매핑
     @GetMapping("/login")
     public String login(){
-        return "/member/login";
+        return "member/login";
     }
 
     @PostMapping("/login")
@@ -28,7 +28,7 @@ public class MemberController {
     //회원가입 페이지 이동 매칭
     @GetMapping("/signup")
     public String signup(){
-        return "/member/write";
+        return "member/write";
     }
     @Autowired
     MemberService memberService; // 메모리할당
@@ -57,7 +57,7 @@ public class MemberController {
 
     //회원 수정 페이지 매핑
     @GetMapping("/update")
-    public String update(){return "/member/update";}
+    public String update(){return "member/update";}
 
     @PutMapping("/update")
     @ResponseBody
@@ -66,15 +66,15 @@ public class MemberController {
 
     @GetMapping("/info")
     public String info(){
-        return "/member/info";
+        return "member/info";
     }
     @GetMapping("/myroom")
     public String myroom(){
-        return "/member/myroom";
+        return "member/myroom";
     }
 
     @GetMapping("/delete")
-    public String delete(){return "/member/delete";}
+    public String delete(){return "member/delete";}
 
     @DeleteMapping("/delete")
     @ResponseBody
