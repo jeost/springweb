@@ -7,7 +7,7 @@
 
     // 1. Map 변수
     var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-        center : new kakao.maps.LatLng( lat , lng ), // 지도의 중심좌표 // 현재 접속된 디바이스 좌표
+        center : new kakao.maps.LatLng( 33.450701, 126.570667 ), // 지도의 중심좌표 // 현재 접속된 디바이스 좌표
         level : 5 // 지도의 확대 레벨
     });
 
@@ -37,7 +37,7 @@
 //        // 클러스터러에 마커들을 추가합니다
 //        clusterer.addMarkers(markers);
 //    });
-            var markerImageUrl = 'http://localhost:8080/img/집.png',
+            var markerImageUrl = 'localhost:8080/img/집.png',
 		    markerImageSize = new kakao.maps.Size(40, 42), // 마커 이미지의 크기
 		    markerImageOptions = {
 		        offset : new kakao.maps.Point(20, 42)// 마커 좌표에 일치시킬 이미지 안의 좌표

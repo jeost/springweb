@@ -64,7 +64,7 @@ public class RoomService {
                         //리눅스 운영체제의 현재 프로젝트 빌더 경로
                             //리눅스 최상위 경로 : /home
                             //리눅스 계정 폴더 경로 : /ec2-user
-                            String dlr="/home/ec2-user/app/springweb/build/resources/static/upload/";
+                            String dlr="C:/Users/504/IdeaProjects/springweb/src/main/resources/static/upload/";
                         String filepath=dlr+uuidfile; // 파일명 같으면 식별 불가해서 난수값추가
                         try {
                             //파일 경로 이동(업로드 처리)

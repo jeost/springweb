@@ -1,9 +1,9 @@
 // 마커 클러스터 지도 사용
 
-//    // 0. 현재 내 위치의 위도 경도 구하기
-//    navigator.geolocation.getCurrentPosition(function(position) {
-//            var lat = position.coords.latitude, // 위도
-//                 lng = position.coords.longitude; // 경도
+    // 0. 현재 내 위치의 위도 경도 구하기
+    navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude, // 위도
+                 lng = position.coords.longitude; // 경도
 
     // 1. Map 변수
     var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
@@ -37,7 +37,7 @@
 //        // 클러스터러에 마커들을 추가합니다
 //        clusterer.addMarkers(markers);
 //    });
-            var markerImageUrl = 'http://springweb.ckicy0rxvqma.ap-northeast-2.rds.amazonaws.com:8080/img/집.png',
+            var markerImageUrl = 'localhost:8080/img/집.png',
 		    markerImageSize = new kakao.maps.Size(40, 42), // 마커 이미지의 크기
 		    markerImageOptions = {
 		        offset : new kakao.maps.Point(20, 42)// 마커 좌표에 일치시킬 이미지 안의 좌표
