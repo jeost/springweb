@@ -18,12 +18,13 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    public boolean login(@RequestParam("mid") String mid, @RequestParam("mpassword") String mpassword){
-        System.out.println(mid+mpassword);
-        return memberService.login(mid, mpassword);
-    }
+    //시큐리티 사용 전 매핑
+//    @PostMapping("/login")
+//    @ResponseBody
+//    public boolean login(@RequestParam("mid") String mid, @RequestParam("mpassword") String mpassword){
+//        System.out.println(mid+mpassword);
+//        return memberService.login(mid, mpassword);
+//    }
 
     //회원가입 페이지 이동 매칭
     @GetMapping("/signup")
@@ -43,17 +44,18 @@ public class MemberController {
         return result;}
 
     //로그아웃 처리 매핑
-    @GetMapping("/logout")
-    public String logout(Model model){
-        memberService.logout();
-        //Dto 생성
-        Hellodto hellodto=Hellodto.builder().
-                name("엄").amount(1234).build();
-        //해당 템플릿에 데이터 보내기
-        model.addAttribute("data",hellodto);
-        //return "main"; // 타임리프 반환
-        return "redirect:/"; // url 이동(최상위 경로로)
-    }
+    //시큐리티 내 로그아웃 기능 사용
+//    @GetMapping("/logout")
+//    public String logout(Model model){
+//        memberService.logout();
+//        //Dto 생성
+//        Hellodto hellodto=Hellodto.builder().
+//                name("엄").amount(1234).build();
+//        //해당 템플릿에 데이터 보내기
+//        model.addAttribute("data",hellodto);
+//        //return "main"; // 타임리프 반환
+//        return "redirect:/"; // url 이동(최상위 경로로)
+//    }
 
     //회원 수정 페이지 매핑
     @GetMapping("/update")

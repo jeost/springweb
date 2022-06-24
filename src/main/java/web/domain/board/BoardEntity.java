@@ -3,6 +3,7 @@ package web.domain.board;
 import lombok.*;
 import web.domain.BaseTime;
 import web.domain.member.MemberEntity;
+import web.domain.member.Role;
 
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public class BoardEntity extends BaseTime {
     private String bcontent;
     private int bview;
     private int blike;
+
     //작성자 : 연관관계
     @ManyToOne
     @JoinColumn(name="mno")

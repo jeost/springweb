@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>제목</title>
+</head>
+<body>
+    <div th:replace="header.html::header"></div>
+    <p>@ResponseBody</p>
+    <p>@RestController</p>
+    <p th:text="${data}"></p>
+    <p th:text="${data.name}"></p>
+    <p th:text="${data.amount}"></p>
+
+    <a href="/room/write">등록</a>
+    <a th:href="@{/room/write}">등록(thymeleaf 사용)</a>
+</body>
+</html>

@@ -1,7 +1,9 @@
 package web.dto;
 
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import web.domain.member.MemberEntity;
+import web.domain.member.Role;
 import web.domain.room.RoomEntity;
 
 import java.util.ArrayList;
@@ -17,7 +19,12 @@ public class Memberdto {
 
     //DTO -> ENTITY
     public MemberEntity toEntity(){
+
+        //패스워드 암호화
+            //비크립트
+        BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
         return MemberEntity.builder().mid(this.mid)
-                .mpassword(this.mpassword).mname(this.mname).roomEntityList(new ArrayList<RoomEntity>()).build();
+                .mpassword(passwordEncoder.encode(this.mpassword)).mname(this.mname).role(Role.USER).roomEntityList(new ArrayList<RoomEntity>()).build();
     }
 }
